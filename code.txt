@@ -1,0 +1,39 @@
+const int irPin =8;       // IR sensor output pin (digital)
+const int ledPin = 13;     // LED pin (digital)
+const int ldrPin=A0;
+// Initialize variables
+int obstacleDetected = LOW;
+
+void setup() {
+  // Initialize serial communication
+  Serial.begin(9600);
+
+  // Set pin modes
+  pinMode(irPin, INPUT);
+  pinMode(ledPin, OUTPUT);
+  pinMode(ldrPin,INPUT);
+  // Ensure LED is off at startup
+  digitalWrite(ledPin, LOW);
+}
+
+void loop() {
+  // Read the IR sensor value
+  obstacleDetected = digitalRead(irPin);
+  int thr=analogRead(ldrPin);
+  // Print the IR sensor value to the serial monitor (for debugging)
+  Serial.print("Obstacle Detected: ");
+  Serial.println(obstacleDetected);
+
+  // Check if an obstacle is detected
+  if (obstacleDetected == LOW && thr>=300) {
+    // Turn ON the LED
+    digitalWrite(ledPin,HIGH);
+  } else {
+    // Turn OFF the LED
+    digitalWrite(ledPin, LOW);
+  }
+
+  // Delay for stability
+  delay(500);
+}
+
